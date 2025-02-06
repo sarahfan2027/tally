@@ -38,11 +38,11 @@ export default function Sidebar({ children }: SidebarProps) {
   return (
     <aside
       className={`h-screen ${
-        expanded ? "w-[280px]" : "w-[88px]"
+        expanded ? "w-[280px]" : "w-[80px]"
       } transition-width duration-300`}
     >
       <nav className="h-full flex flex-col bg-white">
-        <div className="p-4 pl-5 pb-2 flex justify-between items-center">
+        <div className="p-4 pl-3 pb-2 flex justify-between items-center">
           <div
             className={`${
               expanded ? "min-w-[200px]" : "min-w-[40px]"
@@ -59,7 +59,7 @@ export default function Sidebar({ children }: SidebarProps) {
           </div>
           <button
             onClick={toggleExpanded}
-            className="p-1.5 rounded-lg hover:bg-gray-100"
+            className="p-1.5 rounded-lg hover:bg-gray-100 -ml-1"
           >
             {expanded ? <ChevronFirst /> : <MoreVertical />}
           </button>

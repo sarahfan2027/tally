@@ -3,6 +3,7 @@
 import Sidebar, { SidebarItem } from "./components/sidebar";
 import Image from "next/image";
 import { useState } from "react";
+import ProductItem from "./components/item";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -116,10 +117,84 @@ export default function Home() {
             <Image src="/Frame.png" alt="Search" width={30} height={30} />
             <Image src="/sort.png" alt="Filter" width={30} height={30} />
           </div>
-          <button className="bg-[#444EAA] text-white font-medium px-4 py-2 rounded-lg absolute right-40 flex items-center gap-2">
+          <button className="bg-[#444EAA] text-white font-medium px-4 py-2 rounded-lg mr-6 fixed right-32 flex items-center gap-2">
             <Image src="/add.png" alt="Add New" width={12} height={12} />
             Add New
           </button>
+
+          <div className="flex flex-col w-full">
+            <div className="mt-16 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - Red"
+                size="M"
+                imageUrl="/redshirt.png"
+                backgroundColor="white"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - Red"
+                size="M"
+                imageUrl="/redshirt.png"
+                backgroundColor="white"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - Red"
+                size="L"
+                imageUrl="/redshirt.png"
+                backgroundColor="white"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - Black"
+                size="M"
+                imageUrl="/blackshirt.png"
+                backgroundColor="white"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - Black"
+                size="L"
+                imageUrl="/blackshirt.png"
+                backgroundColor="white"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - White"
+                size="S"
+                imageUrl="/whiteshirt.png"
+                backgroundColor="#333333"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - White"
+                size="M"
+                imageUrl="/whiteshirt.png"
+                backgroundColor="#333333"
+              />
+            </div>
+
+            <div className="mt-4 space-y-4 w-full">
+              <ProductItem 
+                name="Gildan T-Shirt - White"
+                size="L"
+                imageUrl="/whiteshirt.png"
+                backgroundColor="#333333"
+              />
+            </div>
+          </div>
         </div>
       </main>
     </div>
