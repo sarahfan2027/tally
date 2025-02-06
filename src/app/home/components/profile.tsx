@@ -1,6 +1,10 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-const ProfileCard = () => {
+interface ProfileCardProps {
+  expanded: boolean;
+}
+
+const ProfileCard = ({ expanded }: ProfileCardProps) => {
   return (
     <div className="flex items-center pb-4 pl-4 bg-white rounded-lg shadow-md">
       <div className="p-3 pr-2 pt-1">
@@ -13,14 +17,18 @@ const ProfileCard = () => {
         />
       </div>
 
-      <div className="pb-2">
-        <h2 className="text-lg font-medium">Don’t Ruin It</h2>
-        <p className="text-sm text-gray-500">Pro Crafter</p>
-      </div>
+      {expanded && (
+        <>
+          <div className="pb-2">
+            <h2 className="text-lg font-medium">Don't Ruin It</h2>
+            <p className="text-sm text-gray-500">Pro Crafter</p>
+          </div>
 
-      <div className="ml-8 text-gray-500">
-        <span>...</span>
-      </div>
+          <div className="ml-8 text-gray-500">
+            <span>...</span>
+          </div>
+        </>
+      )}
     </div>
   );
 };

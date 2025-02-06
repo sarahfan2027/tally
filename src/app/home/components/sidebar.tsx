@@ -6,11 +6,11 @@ import React from "react";
 import { MoreVertical } from "lucide-react";
 import { ChevronFirst } from "lucide-react";
 
-
 interface SidebarItemProps {
   icon: React.ReactNode;
   text: string;
   active?: boolean;
+  expanded?: boolean;
   onClick?: () => void;
 }
 
@@ -19,12 +19,15 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ children }: SidebarProps) {
-    
-    const [activeItem, setActiveItem] = useState<string>("");
+  const [expanded, setExpanded] = useState(true);
+  const [activeItem, setActiveItem] = useState<string>("Materials");
+
+  const toggleExpanded = () => setExpanded((prev) => !prev);
 
   const modifiedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement<SidebarItemProps>(child)) {
       return React.cloneElement(child, {
+        expanded: expanded,
         active: child.props.text === activeItem,
         onClick: () => setActiveItem(child.props.text),
       });
@@ -33,24 +36,42 @@ export default function Sidebar({ children }: SidebarProps) {
   });
 
   return (
-    <aside className="w-[280px] h-screen">
+    <aside
+      className={`h-screen ${
+        expanded ? "w-[280px]" : "w-[88px]"
+      } transition-width duration-300`}
+    >
       <nav className="h-full flex flex-col bg-white">
         <div className="p-4 pl-5 pb-2 flex justify-between items-center">
-          <div className="min-w-[200px] min-h-[40px] relative">
+          <div
+            className={`${
+              expanded ? "min-w-[200px]" : "min-w-[40px]"
+            } min-h-[40px] relative transition-all duration-300`}
+          >
             <Image
-              src="/full_logo.png"
-              alt="Full Logo"
-              width={220}
+              src={expanded ? "/full_logo.png" : "/logo.png"}
+              alt="Logo"
+              width={expanded ? 220 : 40}
               height={40}
               priority
               className="object-contain"
             />
           </div>
+          <button
+            onClick={toggleExpanded}
+            className="p-1.5 rounded-lg hover:bg-gray-100"
+          >
+            {expanded ? <ChevronFirst /> : <MoreVertical />}
+          </button>
         </div>
 
         <ul className="flex-1 px-3">{modifiedChildren}</ul>
 
-        <div className="flex items-center pl-6">
+        <div
+          className={`flex items-center pl-6 ${
+            expanded ? "" : "justify-center pl-0"
+          }`}
+        >
           <Image
             src="/logout.png"
             alt="Logout"
@@ -58,16 +79,24 @@ export default function Sidebar({ children }: SidebarProps) {
             height={60}
             className="cursor-pointer"
           />
-          <h2 className="text-lg ml-1 font-medium text-[#A51818]">Logout</h2>
+          {expanded && (
+            <h2 className="text-lg ml-1 font-medium text-[#A51818]">Logout</h2>
+          )}
         </div>
 
-        <ProfileCard />
+        <ProfileCard expanded={expanded} />
       </nav>
     </aside>
   );
 }
 
-export function SidebarItem({ icon, text, active, onClick }: SidebarItemProps) {
+export function SidebarItem({
+  icon,
+  text,
+  active,
+  expanded = true,
+  onClick,
+}: SidebarItemProps) {
   const modifiedIcon =
     React.isValidElement(icon) && icon.type === Image && active
       ? React.cloneElement(icon as React.ReactElement<any, typeof Image>, {
@@ -80,15 +109,15 @@ export function SidebarItem({ icon, text, active, onClick }: SidebarItemProps) {
       onClick={onClick}
       aria-selected={active ? "true" : "false"}
       className={`relative flex items-center py-2 px-3 my-1
-            font-medium rounded-md cursor-pointer
-            transition-colors border-2 ${
-              active
-                ? "bg-gradient-to-tr from-[#F3F4FC] to-[#F3F4FC] border-[#DADCEE] text-[#262626]"
-                : "hover:bg-gray-100 text-[#808080] border-transparent"
-            }`}
+                font-medium rounded-md cursor-pointer
+                transition-colors border-2 ${
+                  active
+                    ? "bg-gradient-to-tr from-[#F3F4FC] to-[#F3F4FC] border-[#DADCEE] text-[#262626]"
+                    : "hover:bg-gray-100 text-[#808080] border-transparent"
+                }`}
     >
       {modifiedIcon}
-      <span className="w-52 ml-3">{text}</span>
+      {expanded && <span className="w-52 ml-3">{text}</span>}
     </li>
   );
 }
