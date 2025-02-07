@@ -6,7 +6,7 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ expanded }: ProfileCardProps) => {
   return (
-    <div className="flex items-center pb-4 pl-4 bg-white rounded-lg shadow-md">
+    <div className="flex items-center pb-1 bg-white rounded-lg shadow-md">
       <div className="p-3 pr-2 pt-1">
         <Image
           src="/user.png" // Replace with your image path

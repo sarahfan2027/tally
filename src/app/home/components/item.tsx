@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import localFont from "next/font/local";
 
 const uncutSans = localFont({
-  src: "../../../../public/UncutSansRegular.otf"
+  src: "../../../../public/UncutSansRegular.otf",
 });
 
 interface ProductItemProps {
@@ -11,9 +11,16 @@ interface ProductItemProps {
   size: string;
   imageUrl: string;
   backgroundColor?: string;
+  inventoryStock?: "high" | "low";
 }
 
-const ProductItem = ({ name, size, imageUrl, backgroundColor = "white" }: ProductItemProps) => {
+const ProductItem = ({
+  name,
+  size,
+  imageUrl,
+  backgroundColor = "white",
+  inventoryStock = "high",
+}: ProductItemProps) => {
   const [quantity, setQuantity] = useState(13);
 
   return (
@@ -39,10 +46,22 @@ const ProductItem = ({ name, size, imageUrl, backgroundColor = "white" }: Produc
           <Image src="/minus.png" alt="Minus" width={16} height={16} />
         </button>
         <div
-          className={`flex flex-col items-center border border-[#C19A4D] bg-[#F5EFE1] ${uncutSans.className}`}
+          className={`flex flex-col items-center border ${
+            inventoryStock === "high"
+              ? "border-[#C19A4D] bg-[#F5EFE1]"
+              : "border-[#D4D4D4] bg-[#FFFFFF]"
+          } ${uncutSans.className}`}
         >
-          <span className="py-1  text-[18px] font-medium">{quantity}</span>
-          <div className="px-10 text-[8px] text-white w-full bg-[#C19A4D]">24 PCS</div>
+          <span className="py-1 text-[18px] font-medium">{quantity}</span>
+          <div
+            className={`px-10 text-[10px] w-full ${
+              inventoryStock === "high" 
+                ? "bg-[#C19A4D] text-white" 
+                : "bg-[#F2F2F2] text-[#808080] border-[#D4D4D4]"
+            }`}
+          >
+            24 PCS
+          </div>
         </div>
         <button
           onClick={() => setQuantity(quantity + 1)}

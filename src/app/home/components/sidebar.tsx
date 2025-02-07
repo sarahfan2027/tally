@@ -3,9 +3,6 @@ import ProfileCard from "./profile";
 import { useState } from "react";
 import React from "react";
 
-import { MoreVertical } from "lucide-react";
-import { ChevronFirst } from "lucide-react";
-
 interface SidebarItemProps {
   icon: React.ReactNode;
   text: string;
@@ -16,13 +13,18 @@ interface SidebarItemProps {
 
 interface SidebarProps {
   children: React.ReactNode;
+  onExpandChange: (expanded: boolean) => void;
 }
 
-export default function Sidebar({ children }: SidebarProps) {
+export default function Sidebar({ children, onExpandChange }: SidebarProps) {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState<string>("Materials");
 
-  const toggleExpanded = () => setExpanded((prev) => !prev);
+  const toggleExpanded = () => {
+    const newExpanded = !expanded;
+    setExpanded(newExpanded);
+    onExpandChange(newExpanded);
+  };
 
   const modifiedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement<SidebarItemProps>(child)) {
@@ -37,39 +39,34 @@ export default function Sidebar({ children }: SidebarProps) {
 
   return (
     <aside
+      onClick={toggleExpanded}
       className={`h-screen ${
-        expanded ? "w-[280px]" : "w-[80px]"
-      } transition-width duration-300`}
+        expanded ? "w-[280px]" : "w-[77px]"
+      } transition-width duration-300 fixed cursor-pointer`}
     >
       <nav className="h-full flex flex-col bg-white">
-        <div className="p-4 pl-3 pb-2 flex justify-between items-center">
+        <div className="p-4 pl-5 pb-1 flex justify-between items-center">
           <div
             className={`${
               expanded ? "min-w-[200px]" : "min-w-[40px]"
-            } min-h-[40px] relative transition-all duration-300`}
+            } min-h-[40px] relative transition-all`}
           >
             <Image
               src={expanded ? "/full_logo.png" : "/logo.png"}
               alt="Logo"
-              width={expanded ? 220 : 40}
-              height={40}
+              width={expanded ? 220 : 50}
+              height={50}
               priority
               className="object-contain"
             />
           </div>
-          <button
-            onClick={toggleExpanded}
-            className="p-1.5 rounded-lg hover:bg-gray-100 -ml-1"
-          >
-            {expanded ? <ChevronFirst /> : <MoreVertical />}
-          </button>
         </div>
 
         <ul className="flex-1 px-3">{modifiedChildren}</ul>
 
         <div
-          className={`flex items-center pl-6 ${
-            expanded ? "" : "justify-center pl-0"
+          className={`flex items-center px-3 ${
+            expanded ? "" : "justify-center"
           }`}
         >
           <Image
