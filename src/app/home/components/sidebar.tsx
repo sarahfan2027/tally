@@ -17,7 +17,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ children, onExpandChange }: SidebarProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState<string>("Materials");
 
   const modifiedChildren = React.Children.map(children, (child) => {
