@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 
 interface AddItemModalProps {
   isOpen: boolean;
@@ -32,7 +31,6 @@ const AddItemModal = ({ isOpen, onClose, onSubmit }: AddItemModalProps) => {
       inventoryStock
     });
     onClose();
-    // Reset form
     setName("");
     setSize("S");
     setImageUrl("");

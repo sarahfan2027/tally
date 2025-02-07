@@ -9,7 +9,7 @@ const ProfileCard = ({ expanded }: ProfileCardProps) => {
     <div className="flex items-center pb-1 bg-white rounded-lg shadow-md">
       <div className="p-3 pr-2 pt-1">
         <Image
-          src="/user.png" // Replace with your image path
+          src="/user.png"
           alt="Profile"
           className="rounded-full object-contain"
           width={50}

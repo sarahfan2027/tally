@@ -39,12 +39,15 @@ const ProductItem = ({
         </div>
       </div>
       <div className="flex items-center border border-[#D4D4D4] rounded">
+        {/* making the quantity decrease */}
         <button
           onClick={() => setQuantity(Math.max(0, quantity - 1))}
           className={`px-4 py-1 rounded-l bg-white hover:bg-gray-50 ${uncutSans.className}`}
         >
           <Image src="/minus.png" alt="Minus" width={16} height={16} />
         </button>
+
+        {/* display */}
         <div
           className={`flex flex-col items-center border ${
             inventoryStock === "high"
@@ -63,6 +66,9 @@ const ProductItem = ({
             24 PCS
           </div>
         </div>
+
+
+        {/* making the quantity increase */}
         <button
           onClick={() => setQuantity(quantity + 1)}
           className={`px-4 py-1 rounded-r bg-white hover:bg-gray-50 ${uncutSans.className}`}

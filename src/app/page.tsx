@@ -247,8 +247,8 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="mt-4 flex justify-between bg-white rounded-lg shadow-md p-6 min-h-[300px]">
-              {/* Empty Order Queue view */}
+            <div className="mt-4 flex justify-between bg-white rounded-lg shadow-md p-6 min-h-[700px]">
+              {/* empty rn */}
             </div>
           )}
         </div>

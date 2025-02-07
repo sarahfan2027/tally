@@ -2,7 +2,6 @@ import Image from "next/image";
 import ProfileCard from "./profile";
 import { useState } from "react";
 import React from "react";
-import { MoreVertical, ChevronFirst } from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -18,14 +17,8 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ children, onExpandChange }: SidebarProps) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState<string>("Materials");
-
-  const toggleExpanded = () => {
-    const newExpanded = !expanded;
-    setExpanded(newExpanded);
-    onExpandChange(newExpanded);
-  };
 
   const modifiedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement<SidebarItemProps>(child)) {
@@ -43,6 +36,14 @@ export default function Sidebar({ children, onExpandChange }: SidebarProps) {
       className={`h-screen ${
         expanded ? "w-[280px]" : "w-[77px]"
       } transition-width duration-300 fixed`}
+      onMouseEnter={() => {
+        setExpanded(true);
+        onExpandChange(true);
+      }}
+      onMouseLeave={() => {
+        setExpanded(false);
+        onExpandChange(false);
+      }}
     >
       <nav className="h-full flex flex-col bg-white">
         <div className="p-4 pl-5 pb-1 flex justify-between items-center">
@@ -60,12 +61,6 @@ export default function Sidebar({ children, onExpandChange }: SidebarProps) {
               className="object-contain"
             />
           </div>
-          <button
-            onClick={toggleExpanded}
-            className="p-1.5 rounded-lg hover:bg-gray-100 -ml-2 mr-3"
-          >
-            {expanded ? <ChevronFirst /> : <MoreVertical />}
-          </button>
         </div>
 
         <ul className="flex-1 px-3">{modifiedChildren}</ul>
