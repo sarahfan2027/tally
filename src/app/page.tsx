@@ -1,101 +1,264 @@
+"use client";
+
+import Sidebar, { SidebarItem } from "./home/components/sidebar";
 import Image from "next/image";
+import { useState } from "react";
+import ProductItem from "./home/components/item";
+import AddItemModal from "./home/components/AddItemModal";
+
+interface Item {
+  imageUrl: string;
+  name: string;
+  size: string;
+  backgroundColor: string;
+  inventoryStock?: "high" | "low";
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"inventory" | "order-queue">(
+    "inventory"
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [items, setItems] = useState<Item[]>([]);
+  const [expanded, setExpanded] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  const handleAddItem = (newItem: {
+    imageUrl: string;
+    name: string;
+    size: string;
+    backgroundColor: string;
+  }) => {
+    setItems([...items, newItem]);
+  };
+
+  return (
+    <div className="flex">
+      <Sidebar onExpandChange={setExpanded}>
+        <SidebarItem
+          icon={
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/materials.png"
+              alt="Materials"
+              width={30}
+              height={30}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          }
+          text="Materials"
+        />
+
+        <SidebarItem
+          icon={
+            <Image src="/products.png" alt="Products" width={30} height={30} />
+          }
+          text="Products"
+        />
+
+        <SidebarItem
+          icon={
+            <Image
+              src="/fulfillment.png"
+              alt="Fulfillment"
+              width={30}
+              height={30}
+            />
+          }
+          text="Fulfillment"
+        />
+
+        <div className="my-2 border-t border-gray-300" />
+
+        <SidebarItem
+          icon={
+            <Image
+              src="/integrations.png"
+              alt="Integrations"
+              width={30}
+              height={30}
+            />
+          }
+          text="Integrations"
+        />
+      </Sidebar>
+
+      <main
+        className={`flex-1 transition-all duration-300 ${
+          expanded ? "ml-[280px]" : "ml-[80px]"
+        }`}
+      >
+        <div className="bg-gray-100 min-h-screen p-6 pl-32 pr-32">
+          <div className="flex justify-between items-center pt-3 mb-4">
+            <h1 className="flex text-2xl">
+              Materials
+              <span className="text-[#AAAAAA]">&nbsp;/&nbsp;Blanks</span>
+            </h1>
+            <div className="flex gap-1 bg-[#E6E6E6] rounded-lg p-1.5">
+              <button
+                onClick={() => setActiveTab("inventory")}
+                className={`px-6 py-2 font-medium rounded-md ${
+                  activeTab === "inventory"
+                    ? "bg-white text-black shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
+                    : "bg-[#E6E6E6] text-[#666666]"
+                }`}
+              >
+                Inventory
+              </button>
+              <button
+                onClick={() => setActiveTab("order-queue")}
+                className={`px-2 py-2 font-medium rounded-md ${
+                  activeTab === "order-queue"
+                    ? "bg-white text-black shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
+                    : "bg-[#E6E6E6] text-[#666666]"
+                }`}
+              >
+                Order Queue
+              </button>
+            </div>
+          </div>
+
+          {activeTab === "inventory" ? (
+            <div className="mt-4 flex justify-between bg-white rounded-lg shadow-md p-6 min-h-[300px]">
+              <div className="absolute flex items-center w-[430px]">
+                <div className="relative flex-1 pr-2">
+                  <svg
+                    className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search Materials"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <Image src="/Frame.png" alt="Search" width={30} height={30} />
+                <Image src="/sort.png" alt="Filter" width={30} height={30} />
+              </div>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-[#444EAA] text-white font-medium px-4 py-2 rounded-lg absolute mr-6 right-32 flex items-center gap-2"
+              >
+                <Image src="/add.png" alt="Add New" width={12} height={12} />
+                Add New
+              </button>
+
+              <div className="flex flex-col w-full">
+                <div className="mt-16 space-y-4 w-full">
+                  {items.map((item, index) => (
+                    <ProductItem
+                      key={index}
+                      name={item.name}
+                      size={item.size}
+                      imageUrl={item.imageUrl}
+                      backgroundColor={item.backgroundColor}
+                      inventoryStock={item.inventoryStock}
+                    />
+                  ))}
+
+                  <ProductItem
+                    name="Gildan T-Shirt - Red"
+                    size="M"
+                    imageUrl="/redshirt.png"
+                    backgroundColor="white"
+                    inventoryStock="high"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - Red"
+                    size="L"
+                    imageUrl="/redshirt.png"
+                    backgroundColor="white"
+                    inventoryStock="low"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - Red"
+                    size="S"
+                    imageUrl="/redshirt.png"
+                    backgroundColor="white"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - Black"
+                    size="M"
+                    imageUrl="/blackshirt.png"
+                    backgroundColor="white"
+                    inventoryStock="low"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - Black"
+                    size="L"
+                    imageUrl="/blackshirt.png"
+                    backgroundColor="white"
+                    inventoryStock="low"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - White"
+                    size="S"
+                    imageUrl="/whiteshirt.png"
+                    backgroundColor="#333333"
+                    inventoryStock="low"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - White"
+                    size="M"
+                    imageUrl="/whiteshirt.png"
+                    backgroundColor="#333333"
+                    inventoryStock="low"
+                  />
+                </div>
+
+                <div className="mt-4 space-y-4 w-full">
+                  <ProductItem
+                    name="Gildan T-Shirt - White"
+                    size="L"
+                    imageUrl="/whiteshirt.png"
+                    backgroundColor="#333333"
+                    inventoryStock="low"
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-4 flex justify-between bg-white rounded-lg shadow-md p-6 min-h-[300px]">
+              {/* Empty Order Queue view */}
+            </div>
+          )}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <AddItemModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAddItem}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import ProfileCard from "./profile";
 import { useState } from "react";
 import React from "react";
+import { MoreVertical, ChevronFirst } from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -39,10 +40,9 @@ export default function Sidebar({ children, onExpandChange }: SidebarProps) {
 
   return (
     <aside
-      onClick={toggleExpanded}
       className={`h-screen ${
         expanded ? "w-[280px]" : "w-[77px]"
-      } transition-width duration-300 fixed cursor-pointer`}
+      } transition-width duration-300 fixed`}
     >
       <nav className="h-full flex flex-col bg-white">
         <div className="p-4 pl-5 pb-1 flex justify-between items-center">
@@ -60,6 +60,12 @@ export default function Sidebar({ children, onExpandChange }: SidebarProps) {
               className="object-contain"
             />
           </div>
+          <button
+            onClick={toggleExpanded}
+            className="p-1.5 rounded-lg hover:bg-gray-100 -ml-2 mr-3"
+          >
+            {expanded ? <ChevronFirst /> : <MoreVertical />}
+          </button>
         </div>
 
         <ul className="flex-1 px-3">{modifiedChildren}</ul>
